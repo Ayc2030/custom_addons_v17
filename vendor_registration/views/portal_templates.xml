@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_success_page" name="Successful!">
+        <t t-call="vendor_registration.layout">
+            <div class="portal-base">
+                <t t-call="vendor_registration.portal_layout">
+                    <div class="success-page">
+                        <div class="success-checkmark">
+                            <div class="check-icon">
+                                <span class="icon-line line-tip"></span>
+                                <span class="icon-line line-long"></span>
+                                <div class="icon-circle"></div>
+                                <div class="icon-fix"></div>
+                            </div>
+                        </div>
+                        <center>
+                            <h1 t-esc="success_title or 'Success!'"/>
+                            <p t-raw="success_message or 'Your request has been submitted successfully'"></p>
+                        </center>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_error_page" name="Error!">
+        <t t-call="vendor_registration.layout">
+            <div class="portal-base">
+                <t t-call="vendor_registration.portal_layout">
+                    <div class="error-page">
+                        <div class="error-icon">
+                            <div class="circle-border"></div>
+                            <div class="circle">
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                        <center>
+                            <h1 t-esc="error_title or 'Error!'"/>
+                            <p t-esc="error_message or 'Something went wrong'"></p>
+                        </center>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="portal_layout" name="Portal View">
+        <t t-call="vendor_registration.portal_header"/>
+        <div class="content-wrapper" id="contentDiv">
+            <div class="main-container">
+                <header t-esc="content_title or title or ''"/>
+                <t t-out="0"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="portal_header" name="Portal Preview Form View">
+        <!-- reference: codingnepalweb.com -->
+        <nav>
+            <div class="nav-content flex-wrap gap-2 ">
+                <div class="title">
+                    <a href="#"><t t-esc="title or ''"/></a>
+                </div>
+                <ul class="nav-links" t-if="nav_links">
+                    <t t-foreach="nav_links" t-as="link">
+                        <li>
+                            <a t-att-href="link['url']">
+                                <t t-esc="link['title']"/>
+                            </a>
+                        </li>
+                    </t>
+                </ul>
+                <div class="company-info">
+                    <span t-field="company.logo" t-options="{'widget': 'image', 'width': 75, 'height': 20}" role="img"
+                          t-att-aria-label="'Logo of %s' % company.name" t-att-title="company.name"/>
+                    <span t-esc="company.name" class="ms-2 me-2"/>
+                </div>
+<!--                <div class="floating-button-wrapper">-->
+<!--                    <div class="floating-button-inner">-->
+<!--                        <a href="#" class="floating-button">-->
+<!--                            <i class="fa fa-ellipsis-v icon-default"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="floating-menu">-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Supplier</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Table</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Food</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Menu Type</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Menu</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="https://google.com" target="_blank">Go To Google</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Inventory</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Add Staff</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="preference">
+                    <div class="user-menu">
+                        <ul id="top_menu" class="nav navbar-nav ms-auto">
+                            <t t-call="portal.placeholder_user_sign_in">
+                                <t t-set="_item_class" t-value="'nav-item'"/>
+                                <t t-set="_link_class" t-value="'nav-link'"/>
+                            </t>
+                            <t t-call="portal.user_dropdown">
+                                <t t-set="_user_name" t-value="true"/>
+                                <t t-set="_item_class" t-value="'nav-item dropdown'"/>
+                                <t t-set="_link_class" t-value="'nav-link'"/>
+                                <t t-set="_dropdown_menu_class" t-value="'dropdown-menu-end'"/>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="theme-toggle">
+                        <div>
+                            <input type="checkbox" class="checkbox" id="toggle_theme"/>
+                            <label for="toggle_theme" class="checkbox-label">
+                                <i class="fa fa-moon-o"></i>
+                                <i class="fa fa-sun-o"></i>
+                                <span class="ball"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+        <script>
+            let nav = document.querySelector("nav");
+            window.onscroll = function() {
+            if(document.documentElement.scrollTop > 20){
+            nav.classList.add("sticky");
+            } else {
+            nav.classList.remove("sticky");
+            }
+            }
+        </script>
+    </template>
+
+    <template id="vendor_registration.layout" name="Portal Layout" inherit_id="web.frontend_layout" primary="True">
+        <xpath expr="//div[@id='wrapwrap']" position="before">
+            <t t-set="no_livechat" t-value="True"/>
+        </xpath>
+        <xpath expr="//head/t[@t-call-assets][last()]" position="after">
+            <t t-call-assets="vendor_registration.vendor_registration_assets" lazy_load="True"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com"/>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap"
+                  rel="stylesheet"/>
+        </xpath>
+        <xpath expr="//header" position="before">
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+        </xpath>
+        <xpath expr="//header" position="after">
+            <div id="wrap" class="oe_structure oe_empty"/>
+        </xpath>
+    </template>
+
+</odoo>

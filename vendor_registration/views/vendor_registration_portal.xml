@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="vendor_registration_portal" name="Vendor Registration">
+        <t t-call="vendor_registration.layout">
+            <div class="portal-base">
+                <t t-set="title" t-value="'Vendor Registration'"/>
+                <t t-set="content_title" t-value="'Registration'"/>
+                <t t-call="vendor_registration.portal_layout">
+                    <t t-call="vendor_registration.vendor_registration_portal_form"/>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="vendor_registration_portal_form" name="Vendor Registration Form">
+
+        <!-- reference: https://codepen.io/RanaSulman/pen/xxBbobB -->
+        <form aaction="/vendor/registration" method="post" enctype="multipart/form-data">
+            <div class="form-contents">
+                <div class="section-wrapper">
+                    <div class="details">
+                        <span class="title">Enter Your Details</span>
+                        <div class="fields">
+                            <div class="input-field">
+                                <label for="name">Name in English</label>
+                                <input type="text" placeholder="Enter the name in English" id="name" required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="name_arabic">Name in Arabic</label>
+                                <input type="text" placeholder="Enter the name in Arabic" id="name_arabic"
+                                       required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="email">Email</label>
+                                <input type="email" placeholder="Enter email" id="email" required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="contact_person">Contact Person</label>
+                                <input type="email" placeholder="Enter contact person name" id="contact_person"
+                                       required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="mobile">Mobile Number</label>
+                                <input type="number" placeholder="Enter mobile number" id="mobile" required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="job_title">Job Title</label>
+                                <input type="number" placeholder="Enter mobile number" id="job_title" required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label>Selection</label>
+                                <div class="selection">
+                                    <select id="simulated_payment_state">
+                                        <option value="done" title="Successful payment">
+                                            Successful
+                                        </option>
+                                        <option value="pending" title="Payment processing">
+                                            Pending
+                                        </option>
+                                        <option value="cancel" title="Payment canceled by customer">
+                                            Canceled
+                                        </option>
+                                        <option value="error" title="Processing error">
+                                            Error
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="country_id">Country</label>
+                                <div class="selection" name="country_id">
+                                    <select name="country_id" id="country_id">
+                                        <t t-foreach="countries or []" t-as="country">
+                                            <option t-att-value="country.id" t-att-title="country.name">
+                                                <t t-esc="country.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="state_id">State</label>
+                                <div class="selection" name="state_id">
+                                    <select name="state_id" id="state_id">
+                                        <option value="">select...</option>
+                                        <t t-foreach="states or []" t-as="state" t-att-title="state.name">
+                                            <option t-att-value="state.id"
+                                                    t-att-data-country_id="state.country_id.id">
+                                                <t t-esc="state.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="region_id">Region</label>
+                                <div class="selection" name="region_id">
+                                    <select name="region_id" id="region_id">
+                                        <option value="">select...</option>
+                                        <t t-foreach="regions or []" t-as="region" t-att-title="region.name">
+                                            <option t-att-value="region.id"
+                                                    t-att-data-country_id="state.country_id.id">
+                                                <t t-esc="region.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="cr_number">CR Number</label>
+                                <input type="text" placeholder="Enter your company CR number" id="cr_number"
+                                       required="1"/>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="cr_number_arabic">CR Number in Arabic</label>
+                                <input type="text" placeholder="Enter your company CR number in Arabic"
+                                       id="cr_number_arabic" required="1"/>
+                            </div>
+
+                            <div class="input-field file-upload">
+                                <label>CR File</label>
+                                <div class="file-input-wrap">
+                                    <form action="#" name="form" method="get">
+                                        <!-- FILE UPLOAD BEGIN -->
+                                        <div class="file">
+                                            <div class="file__input" id="file__input">
+                                                <input id="customFile" class="file__input--file" type="file"
+                                                       multiple="multiple"
+                                                       name="files[]"/>
+                                                <label class="file__input--label" for="customFile"
+                                                       data-text-btn="Upload">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                         viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path
+                                                            d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                                                    <span class="placeholder">Upload CR file</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- FILE UPLOAD END -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <button class="submit-btn">
+                    <span class="btnText">Submit</span>
+                    <i class="oi oi-chevron-right"></i>
+                </button>
+            </div>
+        </form>
+    </template>
+
+</odoo>
